@@ -1,3 +1,5 @@
+package suncertify.db;
+
 public interface DB {
 
 // Reads a record from the file. Returns an array where each 
