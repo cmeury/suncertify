@@ -8,17 +8,20 @@ public class RecordNotFoundExceptionTest {
 
 	@Test
 	public void testRecordNotFoundException() {
-		fail("Not yet implemented");
+		RecordNotFoundException recordNotFoundException = new RecordNotFoundException();
+		assertEquals(((Exception ) recordNotFoundException).getMessage(), recordNotFoundException.getMessage());
 	}
 
 	@Test
 	public void testRecordNotFoundExceptionString() {
-		fail("Not yet implemented");
+		String desc = "DESCRIPTION";
+		RecordNotFoundException recordNotFoundException = new RecordNotFoundException(desc);
+		assertEquals(desc, recordNotFoundException.getMessage());
 	}
 
 	@Test
 	public void testGetMessage() {
-		fail("Not yet implemented");
+		// Tested above
 	}
 
 }

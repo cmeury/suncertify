@@ -8,17 +8,20 @@ public class DuplicateKeyExceptionTest {
 
 	@Test
 	public void testDuplicateKeyException() {
-		fail("Not yet implemented");
+		DuplicateKeyException duplicateKeyException = new DuplicateKeyException();
+		assertEquals(((Exception ) duplicateKeyException).getMessage(), duplicateKeyException.getMessage());
 	}
 
 	@Test
 	public void testDuplicateKeyExceptionString() {
-		fail("Not yet implemented");
+		String desc = "DESCRIPTION";
+		DuplicateKeyException duplicateKeyException = new DuplicateKeyException(desc);
+		assertEquals(desc, duplicateKeyException.getMessage());
 	}
 
 	@Test
 	public void testGetMessage() {
-		fail("Not yet implemented");
+		// Tested above
 	}
 
 }
