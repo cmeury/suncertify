@@ -12,7 +12,7 @@ public class Data implements DB {
 		assert fileName != null;
 		this.dataFileParser = new DataFileParser(fileName);
 		try {
-			dataFileParser.open();
+			dataFileParser.parse();
 		} catch (Exception e) {
 			fail("Must not throw exception with existing file: " + e.getMessage());
 		}

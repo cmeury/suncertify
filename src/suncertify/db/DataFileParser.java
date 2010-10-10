@@ -67,7 +67,7 @@ public class DataFileParser {
 		return schema;
 	}
 
-	public void open() throws Exception {
+	public void parse() throws Exception {
 		if(this.databaseFile == null) {
 			throw new Exception("No database file specified");
 		}
@@ -81,7 +81,7 @@ public class DataFileParser {
 			throw new Exception("Cannot write to specified database file");
 		}
 		
-		Message.getLogger().info("Trying to open data file " + databaseFile.getAbsolutePath());
+		Message.getLogger().info("Parsing the data file " + databaseFile.getAbsolutePath());
 		FileInputStream fileInputStream = null;
 		try {
 			fileInputStream = new FileInputStream(databaseFile);
