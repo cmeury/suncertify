@@ -5,14 +5,9 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import suncertify.db.Record.Deleted;
-import suncertify.db.Record.Smoking;
 import suncertify.tools.Message;
 
 /**
@@ -22,14 +17,18 @@ import suncertify.tools.Message;
  * optional and is the responsibility of users of methods in this class."
  *
  */
-public class DataFile {
+public class DataFileParser {
 	
 	private File databaseFile;
 	private int recordLength;
 	private Schema schema;
-	private List<Record> records;
-	
-	public DataFile(File file) {
+	private String[][] records;
+
+	public String[][] getRecords() {
+		return records;
+	}
+
+	public DataFileParser(File file) {
 		this.databaseFile = file;
 		this.schema = new Schema();
 	}
@@ -43,7 +42,6 @@ public class DataFile {
 	}
 
 	public void open() throws Exception {
-		records = new ArrayList<Record>();
 		if(this.databaseFile == null) {
 			throw new Exception("No database file specified");
 		}
@@ -57,6 +55,7 @@ public class DataFile {
 			throw new Exception("Cannot write to specified database file");
 		}
 		
+		Message.getLogger().info("Trying to open data file " + databaseFile.getAbsolutePath());
 		FileInputStream fileInputStream = null;
 		try {
 			fileInputStream = new FileInputStream(databaseFile);
@@ -68,7 +67,7 @@ public class DataFile {
 			}
 			recordLength = dataInputStream.readInt();
 			short numberOfFields = dataInputStream.readShort();
-			
+
 			long headerSize = 10;
 			
 			// Looping through fields of db schema
@@ -90,44 +89,52 @@ public class DataFile {
 				throw new Exception("Records malformatted in database file.");
 			}
 			long recordCount = recordsSize / recordLength;
+
+			List<String[]> dynamicRecords = new ArrayList<String[]>();
+
 			for(int c = 0; c < recordCount; c++) {
+				String[] currentRecord = new String[numberOfFields];
+				
+				// Deleted Flag
 				byte deletedByte = dataInputStream.readByte();
-				Record.Deleted isDeleted;
-				if(deletedByte == 1) {
-					isDeleted = Deleted.YES;
-				} else if(deletedByte  == 0) {
-					isDeleted = Deleted.NO;
-				}
-				else {
+				if(deletedByte != 1 && deletedByte != 0) {
 					throw new Exception("Bad deleted flag in in database file.");
 				}
+				currentRecord[0] = (new Character((char) deletedByte)).toString();
+				
+				// Name
+				currentRecord[1] = readString(dataInputStream, 64);
+				
+				// Location
+				currentRecord[2] = readString(dataInputStream, 64);
+				
+				// Size
+				currentRecord[3] = readString(dataInputStream, 4);
 
-				String name = readString(dataInputStream, 64);
-				String location = readString(dataInputStream, 64);
-				String size = readString(dataInputStream, 4);
-
+				// Smoking Flag
 				byte smokingByte = dataInputStream.readByte();
-				Record.Smoking smokingAllowed;
-				if(smokingByte == 'Y') {
-					smokingAllowed = Smoking.ALLOWED;
-				} else if(smokingByte  == 'N') {
-					smokingAllowed = Smoking.NOTALLOWED;
-				}
-				else {
+				if(smokingByte != 'Y' && smokingByte  != 'N') {
 					throw new Exception("Bad deleted flag in in database file.");
 				}
-
-				String rate = readString(dataInputStream, 8);
+				currentRecord[4] = (new Character((char) smokingByte)).toString();
 				
-				String dateString = readString(dataInputStream, 10);
-				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-				Date date = dateFormat.parse(dateString);
+				// Rate
+				currentRecord[5] = readString(dataInputStream, 8);
 				
-				String id = readString(dataInputStream, 8);
-				Record record = new Record(isDeleted, name, location, size, smokingAllowed, rate, date, id);
-				records.add(record);
+//				String dateString = readString(dataInputStream, 10);
+//				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//				Date date = dateFormat.parse(dateString);
+				
+				// Date
+				currentRecord[6] = readString(dataInputStream, 10);
+				
+				// ID
+				currentRecord[7] = readString(dataInputStream, 8);
+				
+				dynamicRecords.add(currentRecord);
 			}
 			
+			this.records = (String[][]) dynamicRecords.toArray();
 		} catch(EOFException e) {
 			Message.error("Unexpected end of data file encountered.", e);
 		} catch(Exception e) {
