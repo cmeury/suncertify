@@ -1,11 +1,15 @@
 package suncertify.tools;
 
+import java.util.logging.Logger;
+
 /**
  * Presents text to the user
  * @author Ced
  *
  */
 public class Message {
+
+	private static Logger logger = Logger.getLogger("suncertify");
 
 	private static String newline = System.getProperty("line.separator");
 	
@@ -22,4 +26,9 @@ public class Message {
 		System.err.println("Application encountered a fatal error." + newline);
 		e.printStackTrace();
 	}
+	
+	public static Logger getLogger() {
+		return logger;
+	}
+
 }
