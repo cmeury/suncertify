@@ -28,4 +28,13 @@ public class Schema {
 	public String toString() {
 		return fieldList.toString();
 	}
+	
+	public int numberOfFields() {
+		return fieldList.size();
+	}
+	
+	public String getName(int index) {
+		Field field = fieldList.get(index);
+		return field.getName();
+	}
 }

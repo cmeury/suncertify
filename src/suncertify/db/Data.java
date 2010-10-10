@@ -1,14 +1,27 @@
 package suncertify.db;
 
+import static org.junit.Assert.fail;
 
-public class DBImpl implements DB {
+import java.io.File;
 
 
+public class Data implements DB {
+	private DataFileParser dataFile;
+	
+	public Data(File fileName) {
+		assert fileName != null;
+		this.dataFile = new DataFileParser(fileName);
+		try {
+			dataFile.open();
+		} catch (Exception e) {
+			fail("Must not throw exception with existing file: " + e.getMessage());
+		}
+	}
 	
 	@Override
 	public String[] read(int recNo) throws RecordNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		String[][] records = dataFile.getRecords();
+		return records[recNo];
 	}
 
 	@Override
