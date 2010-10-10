@@ -2,50 +2,40 @@ package suncertify.gui;
 
 import javax.swing.table.AbstractTableModel;
 
-import suncertify.db.DB;
-import suncertify.db.RecordNotFoundException;
-import suncertify.tools.Message;
 import suncertify.tools.Strings;
 
 public class RecordsTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-//	private Schema schema;
-	private DB db;
 
+	private String[][] results;
 	
-	public RecordsTableModel(DB db) {
-		assert db != null;
-		this.db = db;
-//		schema = dataFileParser.getSchema();
+	public void setResults(String[][] results) {
+		this.results = results;
 	}
+	
 	@Override
 	public int getColumnCount() {
-		int length = 0;
-		try {
-			String[] firstRecord = null;
-			firstRecord = db.read(0);
-			length = firstRecord.length;
-		} catch (RecordNotFoundException e) {
-			Message.error("Cannot calculate column count", e);
-		} 
-		return length;
+		if(results == null) {
+			return 0;
+		}
+		return Strings.getColumnNames().length;
 	}
 
 	@Override
 	public int getRowCount() {
-		return db.find(null).length;
+		if(results == null) {
+			return 0;
+		}
+		return results.length;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		String[] record = null;
-		try {
-			record = db.read(rowIndex);
-		} catch (RecordNotFoundException e) {
-			Message.error("Cannot get value at [" + rowIndex + "][" + columnIndex + "]", e);
+		if(results == null) {
+			return null;
 		}
-		return record[columnIndex];
+		return results[rowIndex][columnIndex];
 	}
 	
 	@Override
