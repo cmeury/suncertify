@@ -17,7 +17,6 @@ public class MainWindowModel {
 	public MainWindowModel(File fileName) {
 		assert fileName != null;
 		this.db = new Data(fileName);
-		
 	}
 
 	public DB getDB() {
