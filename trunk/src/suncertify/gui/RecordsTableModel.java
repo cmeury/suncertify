@@ -3,40 +3,53 @@ package suncertify.gui;
 import javax.swing.table.AbstractTableModel;
 
 import suncertify.db.DB;
-import suncertify.db.DataFileParser;
-import suncertify.db.Schema;
+import suncertify.db.RecordNotFoundException;
+import suncertify.tools.Message;
+import suncertify.tools.Strings;
 
 public class RecordsTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
-	private static DataFileParser dataFileParser;
-	private Schema schema;
-	private String[][] records;
+//	private Schema schema;
 	private DB db;
+
 	
 	public RecordsTableModel(DB db) {
 		assert db != null;
 		this.db = db;
-		records = db.getRecords();
-		schema = dataFileParser.getSchema();
+//		schema = dataFileParser.getSchema();
 	}
 	@Override
 	public int getColumnCount() {
-		return records.length;
+		int length = 0;
+		try {
+			String[] firstRecord = null;
+			firstRecord = db.read(0);
+			length = firstRecord.length;
+		} catch (RecordNotFoundException e) {
+			Message.error("Cannot calculate column count", e);
+		} 
+		return length;
 	}
 
 	@Override
 	public int getRowCount() {
-		return records[0].length;
+		return db.find(null).length;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return records[columnIndex][rowIndex];
+		String[] record = null;
+		try {
+			record = db.read(rowIndex);
+		} catch (RecordNotFoundException e) {
+			Message.error("Cannot get value at [" + rowIndex + "][" + columnIndex + "]", e);
+		}
+		return record[columnIndex];
 	}
 	
 	@Override
 	public String getColumnName(int columnIndex) {
-		return schema.getName(columnIndex);
+		return Strings.getColumnNames()[columnIndex];
 	}
 }

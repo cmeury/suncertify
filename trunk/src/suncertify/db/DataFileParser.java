@@ -5,8 +5,6 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import suncertify.tools.Message;
 
@@ -24,8 +22,36 @@ public class DataFileParser {
 	private Schema schema;
 	private String[][] records;
 
-	public String[][] getRecords() {
+	public String[][] getAllRecords() {
 		return records;
+	}
+	
+	/**
+	 * Returns a row of data from the data file
+	 * @param index row index of the data that should be retrieved
+	 * @return a string array containing the data specified by index
+	 * @throws RecordNotFoundException when the specified index does not return valid data
+	 */
+	public String[] getRecord(int index) throws RecordNotFoundException {
+		if(records.length == 0 || index > records.length) {
+			throw new RecordNotFoundException("Row " + index + " not in data file.");
+		}
+		if(records[index] == null || records[index].length == 0) {
+			throw new RecordNotFoundException("Not data in row " + index);
+		}
+		return records[index];
+	}
+	
+	public String getField(int index, int fieldNumber) {
+		return records[index][fieldNumber];
+	}
+	
+	/**
+	 * Returns true when update succeeded
+	 */
+	public boolean updateField(int index, int FieldNumber) {
+		// TBD
+		return true;
 	}
 
 	public DataFileParser(File file) {
@@ -70,7 +96,7 @@ public class DataFileParser {
 
 			long headerSize = 10;
 			
-			// Looping through fields of db schema
+			// Looping through fields of DB schema
 			for(int c = 0; c < numberOfFields; c++) {
 				int fieldNameLength = dataInputStream.readShort();
 				headerSize += 4 + fieldNameLength;
@@ -78,8 +104,6 @@ public class DataFileParser {
 				short fieldLength = dataInputStream.readShort();
 				this.schema.add(nameBytes, fieldLength);
 			}
-			
-			// Loop through the records
 			
 			// Calculate how many records are present in the file
 			long fileSize = databaseFile.length();			// in bytes
@@ -89,52 +113,52 @@ public class DataFileParser {
 				throw new Exception("Records malformatted in database file.");
 			}
 			long recordCount = recordsSize / recordLength;
+			
+			// Check and convert count of records to integer for creation of the array
+			if(recordCount > Integer.MAX_VALUE) {
+				throw new Exception("Number of records too large: " + recordCount);
+			} 
+			int recordCountInt = (int) recordCount;
+			this.records = new String[recordCountInt][numberOfFields+1];	// plus one to include "deleted" flag
 
-			List<String[]> dynamicRecords = new ArrayList<String[]>();
-
+			// Loop through the records
 			for(int c = 0; c < recordCount; c++) {
-				String[] currentRecord = new String[numberOfFields];
-				
 				// Deleted Flag
 				byte deletedByte = dataInputStream.readByte();
 				if(deletedByte != 1 && deletedByte != 0) {
 					throw new Exception("Bad deleted flag in in database file.");
 				}
-				currentRecord[0] = (new Character((char) deletedByte)).toString();
+				records[c][0] = (new Character((char) deletedByte)).toString();
 				
 				// Name
-				currentRecord[1] = readString(dataInputStream, 64);
+				records[c][1] = readString(dataInputStream, 64);
 				
 				// Location
-				currentRecord[2] = readString(dataInputStream, 64);
+				records[c][2] = readString(dataInputStream, 64);
 				
 				// Size
-				currentRecord[3] = readString(dataInputStream, 4);
+				records[c][3] = readString(dataInputStream, 4);
 
 				// Smoking Flag
 				byte smokingByte = dataInputStream.readByte();
 				if(smokingByte != 'Y' && smokingByte  != 'N') {
 					throw new Exception("Bad deleted flag in in database file.");
 				}
-				currentRecord[4] = (new Character((char) smokingByte)).toString();
+				records[c][4] = (new Character((char) smokingByte)).toString();
 				
 				// Rate
-				currentRecord[5] = readString(dataInputStream, 8);
+				records[c][5] = readString(dataInputStream, 8);
 				
 //				String dateString = readString(dataInputStream, 10);
 //				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 //				Date date = dateFormat.parse(dateString);
 				
 				// Date
-				currentRecord[6] = readString(dataInputStream, 10);
+				records[c][6] = readString(dataInputStream, 10);
 				
 				// ID
-				currentRecord[7] = readString(dataInputStream, 8);
-				
-				dynamicRecords.add(currentRecord);
+				records[c][7] = readString(dataInputStream, 8);
 			}
-			
-			this.records = (String[][]) dynamicRecords.toArray();
 		} catch(EOFException e) {
 			Message.error("Unexpected end of data file encountered.", e);
 		} catch(Exception e) {
