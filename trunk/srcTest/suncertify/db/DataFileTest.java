@@ -14,18 +14,18 @@ public class DataFileTest {
 
 		// File exists
 		File noFile = new File("funnylookingcamel.db");
-		DataFile datafile = new DataFile(noFile);
+		DataFileParser datafile = new DataFileParser(noFile);
 		try {
-			datafile.open();
+			datafile.parse();
 			fail("Must throw exception with non-existing file");
 		} catch (Exception e) {
 		}
 
 		// File exists
 		File existingFile = new File("srcTest/suncertify/db/db-1x1.db");
-		datafile = new DataFile(existingFile);
+		datafile = new DataFileParser(existingFile);
 		try {
-			datafile.open();
+			datafile.parse();
 		} catch (Exception e) {
 			fail("Must not throw exception with existing file: " + e.getMessage());
 		}
