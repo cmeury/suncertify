@@ -1,40 +1,26 @@
 package suncertify.db;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Schema of the database, basically a list of fields
- *
+ * Information about the file format as specified by the assignment
+ * 
  */
 public class Schema {
 
-	List<Field> fieldList;
-	
-	public Schema() {
-		this.fieldList = new ArrayList<Field>();
+	private static final String[] fieldNames = { "Deleted", "Name", "City",
+			"Size", "Smoking", "Rate", "Date", "Owner", };
+
+	private static final int magicCookie = 257;
+
+	public static int getMagicCookie() {
+		return magicCookie;
 	}
-	
-	/**
-	 *  Adds a new field to the schema
-	 * @param name the name of the database field
-	 * @param fieldLength amount of bytes covered by this database field
-	 */
-	public void add(String name, int fieldLength) {
-		this.fieldList.add(new Field(name, fieldLength));
+
+	public static String[] getFieldNames() {
+		return fieldNames;
 	}
-	
-	@Override
-	public String toString() {
-		return fieldList.toString();
-	}
-	
-	public int numberOfFields() {
-		return fieldList.size();
-	}
-	
-	public String getName(int index) {
-		Field field = fieldList.get(index);
-		return field.getName();
+
+	public static int getFieldCount() {
+		return fieldNames.length;
 	}
 }

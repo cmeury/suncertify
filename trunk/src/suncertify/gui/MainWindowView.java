@@ -5,7 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -15,7 +14,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.DocumentListener;
 
+import suncertify.db.Schema;
 import suncertify.tools.Message;
 import suncertify.tools.Strings;
 
@@ -36,7 +35,6 @@ public class MainWindowView extends JFrame {
 	
     private JPanel rootPanel;
 	private JLabel introLabel;
-	private RecordsTableModel tableModel;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private MainWindowModel mainWindowModel;
@@ -61,7 +59,7 @@ public class MainWindowView extends JFrame {
 		// Create search label, list box, text field and button
 		searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		searchLabel = new JLabel(Strings.getMainWindowSearchLabelText());
-		columnComboBox = new JComboBox(Strings.getColumnNames());
+		columnComboBox = new JComboBox(Schema.getFieldNames());
 		columnComboBox.setSelectedIndex(2);
 		
 		searchButton = new JButton(Strings.getMainWindowSearchButtonText());
@@ -113,7 +111,9 @@ public class MainWindowView extends JFrame {
 	}
 	
     class CancelAction extends AbstractAction {
-        public void actionPerformed(ActionEvent ev) {
+		private static final long serialVersionUID = 1L;
+
+		public void actionPerformed(ActionEvent ev) {
             searchTextField.setText("");
         }
     }

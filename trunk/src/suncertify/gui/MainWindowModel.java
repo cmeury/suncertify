@@ -7,8 +7,8 @@ import javax.swing.table.TableModel;
 import suncertify.db.DB;
 import suncertify.db.Data;
 import suncertify.db.RecordNotFoundException;
+import suncertify.db.Schema;
 import suncertify.tools.Message;
-import suncertify.tools.Strings;
 
 /**
  * Provides the view with data to display
@@ -34,10 +34,10 @@ public class MainWindowModel {
 	}
 	
 	public void showFullTextSearchResults(int columnIndex, String searchString) {
-		String[] criteria = new String[Strings.getColumnNames().length];
+		String[] criteria = new String[Schema.getFieldCount()];
 		criteria[columnIndex] = searchString;
 		int[] resultIndices = db.find(criteria);
-		String[][] results = new String[resultIndices.length][Strings.getColumnNames().length];
+		String[][] results = new String[resultIndices.length][Schema.getFieldCount()];
 		for(int c=0; c < resultIndices.length; c++) {
 			try {
 				results[c] = db.read(resultIndices[c]);
