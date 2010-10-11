@@ -14,21 +14,6 @@ public class Strings {
 		return mainWindowSearchButtonText;
 	}
 
-	private static final String[] columnNames = {
-			"Deleted",
-			"Name",
-			"City",
-			"Size",
-			"Smoking",
-			"Rate",
-			"Date",
-			"Owner",
-			};
-
-	public static String[] getColumnNames() {
-		return columnNames;
-	}
-
 	public static String getMainWindowIntroLabelText() {
 		return mainWindowIntroLabelText;
 	}

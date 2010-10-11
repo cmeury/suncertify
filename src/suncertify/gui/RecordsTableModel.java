@@ -2,7 +2,7 @@ package suncertify.gui;
 
 import javax.swing.table.AbstractTableModel;
 
-import suncertify.tools.Strings;
+import suncertify.db.Schema;
 
 public class RecordsTableModel extends AbstractTableModel {
 
@@ -19,7 +19,7 @@ public class RecordsTableModel extends AbstractTableModel {
 		if(results == null) {
 			return 0;
 		}
-		return Strings.getColumnNames().length;
+		return Schema.getFieldCount();
 	}
 
 	@Override
@@ -40,6 +40,6 @@ public class RecordsTableModel extends AbstractTableModel {
 	
 	@Override
 	public String getColumnName(int columnIndex) {
-		return Strings.getColumnNames()[columnIndex];
+		return Schema.getFieldNames()[columnIndex];
 	}
 }

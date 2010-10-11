@@ -88,7 +88,7 @@ public class DataFileParser {
 			DataInputStream dataInputStream = new DataInputStream(fileInputStream);
 			// Reading and verifying cookie, length of records and number of fields in schema
 			int magicCookie = dataInputStream.readInt();
-			if(magicCookie != 257) {
+			if(magicCookie != Schema.getMagicCookie()) {
 				throw new Exception("Not a proper datafile, magic cookie mismatch");
 			}
 			recordLength = dataInputStream.readInt();
@@ -100,9 +100,11 @@ public class DataFileParser {
 			for(int c = 0; c < numberOfFields; c++) {
 				int fieldNameLength = dataInputStream.readShort();
 				headerSize += 4 + fieldNameLength;
-				String nameBytes = readString(dataInputStream, fieldNameLength);
-				short fieldLength = dataInputStream.readShort();
-				this.schema.add(nameBytes, fieldLength);
+				// read field name, no need to store it
+				readString(dataInputStream, fieldNameLength);
+				// read field length, no need to store it
+				dataInputStream.readShort();
+				//this.schema.add(nameBytes, fieldLength);
 			}
 			
 			// Calculate how many records are present in the file
