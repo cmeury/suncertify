@@ -39,14 +39,54 @@ public class Data implements DB {
 
 	@Override
 	public int[] find(String[] criteria) {
-		// at the moment this method returns all row indices irrespective of the criteria argument
-		String[][] allRecords = dataFileParser.getAllRecords();
-		int length = allRecords.length;
-		int[] results = new int[length];
-		for(int c = 0; c < length; c++) {
-			results[c] = c;
+		if(criteria.length != Schema.getFieldCount()) {
+			throw new IllegalArgumentException("Invalid criteria array");
 		}
-		return results;
+
+		String[][] allRecords = dataFileParser.getAllRecords();
+		//Set<Integer> resultIndices = new TreeSet<Integer>();
+		boolean[] match = new boolean[allRecords.length];
+		for(int i = 0; i < allRecords.length; i++) {
+			match[i] = true;
+		}
+		
+		// loop through the fields
+		for(int col = 0; col < Schema.getFieldCount(); col++) {
+			// when the criterion is null, we just leave the matchingRows list as it is
+			if(criteria[col] != null) {
+				String search = criteria[col].toLowerCase().trim();
+
+				// looping through rows and explicitely set to true or false depending on the matching
+				for(int row = 0; row < allRecords.length; row++) {
+					String field = allRecords[row][col].toLowerCase().trim();
+					if(field.startsWith(search)) {
+						match[row] = true;
+					} else {
+						match[row] = false;
+					}
+				}
+			
+			}
+		}
+
+		// as the interface dictates, we have to convert back to primitive types
+		int matchCount = 0;
+		for(int i = 0; i < allRecords.length; i++) {
+			if(match[i] == true) {
+				matchCount++;
+			}
+		}
+		
+		// loop through the boolean array and fill up the result rows array with content
+		int index = 0;
+		int[] matchingRows = new int[matchCount];
+		for(int i = 0; i < allRecords.length; i++) {
+			if(match[i] == true) {
+				matchingRows[index] = i;
+				index++;
+			}
+		}
+		return matchingRows;
 	} 
 
 	@Override

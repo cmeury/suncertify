@@ -21,6 +21,7 @@ public class DataFileParser {
 	private int recordLength;
 	private Schema schema;
 	private String[][] records;
+	private boolean[] deleted;
 
 	public String[][] getAllRecords() {
 		return records;
@@ -67,6 +68,10 @@ public class DataFileParser {
 		return schema;
 	}
 
+	public boolean isDeleted(int recNo) {
+		return deleted[recNo];
+	}
+	
 	public void parse() throws Exception {
 		if(this.databaseFile == null) {
 			throw new Exception("No database file specified");
@@ -121,45 +126,50 @@ public class DataFileParser {
 				throw new Exception("Number of records too large: " + recordCount);
 			} 
 			int recordCountInt = (int) recordCount;
-			this.records = new String[recordCountInt][numberOfFields+1];	// plus one to include "deleted" flag
+			this.records = new String[recordCountInt][numberOfFields];	
 
+			deleted = new boolean[recordCountInt];
+			
 			// Loop through the records
-			for(int c = 0; c < recordCount; c++) {
+			for(int c = 0; c < recordCountInt; c++) {
 				// Deleted Flag
 				byte deletedByte = dataInputStream.readByte();
-				if(deletedByte != 1 && deletedByte != 0) {
+				if(deletedByte == 1) {
+					deleted[c] = true;
+				} else if(deletedByte == 0) {
+					deleted[c] = false;
+				} else {
 					throw new Exception("Bad deleted flag in in database file.");
 				}
-				records[c][0] = (new Character((char) deletedByte)).toString();
 				
 				// Name
-				records[c][1] = readString(dataInputStream, 64);
+				records[c][0] = readString(dataInputStream, 64);
 				
 				// Location
-				records[c][2] = readString(dataInputStream, 64);
+				records[c][1] = readString(dataInputStream, 64);
 				
 				// Size
-				records[c][3] = readString(dataInputStream, 4);
+				records[c][2] = readString(dataInputStream, 4);
 
 				// Smoking Flag
 				byte smokingByte = dataInputStream.readByte();
 				if(smokingByte != 'Y' && smokingByte  != 'N') {
 					throw new Exception("Bad deleted flag in in database file.");
 				}
-				records[c][4] = (new Character((char) smokingByte)).toString();
+				records[c][3] = (new Character((char) smokingByte)).toString();
 				
 				// Rate
-				records[c][5] = readString(dataInputStream, 8);
+				records[c][4] = readString(dataInputStream, 8);
 				
 //				String dateString = readString(dataInputStream, 10);
 //				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 //				Date date = dateFormat.parse(dateString);
 				
 				// Date
-				records[c][6] = readString(dataInputStream, 10);
+				records[c][5] = readString(dataInputStream, 10);
 				
 				// ID
-				records[c][7] = readString(dataInputStream, 8);
+				records[c][6] = readString(dataInputStream, 8);
 			}
 		} catch(EOFException e) {
 			Message.error("Unexpected end of data file encountered.", e);
