@@ -7,7 +7,7 @@ package suncertify.db;
  */
 public class Schema {
 
-	private static final String[] fieldNames = { "Deleted", "Name", "City",
+	private static final String[] fieldNames = { "Name", "City",
 			"Size", "Smoking", "Rate", "Date", "Owner", };
 
 	private static final int magicCookie = 257;
