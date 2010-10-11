@@ -3,6 +3,7 @@ package suncertify.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -20,14 +21,20 @@ public class MainWindowController {
 	public MainWindowController(MainWindowModel model, MainWindowView view) {
 		this.model = model;
 		this.view = view;
-		
 		this.view.addSearchListener(new SearchListener());
 		this.view.addSearchDocumentListener(new SearchDocumentListener());
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				searchAction();
+			}
+		});
 	}
 	
 	private void searchAction() {
 		Message.getLogger().info("Search text changed or search button pressed");
-		model.showFullTextSearchResults(view.getColumnComboBoxIndex(), view.getSearchText());
+		model.search(view.getColumnComboBoxIndex(), view.getSearchText());
 	}
 
 	private class SearchDocumentListener implements DocumentListener {

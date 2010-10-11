@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -60,7 +59,7 @@ public class MainWindowView extends JFrame {
 		searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		searchLabel = new JLabel(Strings.getMainWindowSearchLabelText());
 		columnComboBox = new JComboBox(Schema.getFieldNames());
-		columnComboBox.setSelectedIndex(2);
+		columnComboBox.setSelectedIndex(1);
 		
 		searchButton = new JButton(Strings.getMainWindowSearchButtonText());
         InputMap im = searchButton.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -102,8 +101,7 @@ public class MainWindowView extends JFrame {
 	// Event Handling
 	public void addSearchListener(ActionListener actionListener) {
 		searchButton.addActionListener(actionListener);
-		searchButton.addKeyListener(new KeyAdapter() {
-		});
+		columnComboBox.addActionListener(actionListener);
 	}
 	
 	public void addSearchDocumentListener(DocumentListener documentListener) {

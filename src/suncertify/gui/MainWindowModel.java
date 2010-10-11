@@ -33,9 +33,13 @@ public class MainWindowModel {
 		return this.recordsTableModel;
 	}
 	
-	public void showFullTextSearchResults(int columnIndex, String searchString) {
+	public synchronized void search(int columnIndex, String searchString) {
 		String[] criteria = new String[Schema.getFieldCount()];
-		criteria[columnIndex] = searchString;
+		if(searchString.equals("")) {
+			criteria[columnIndex] = null;
+		} else {
+			criteria[columnIndex] = searchString;
+		}
 		int[] resultIndices = db.find(criteria);
 		String[][] results = new String[resultIndices.length][Schema.getFieldCount()];
 		for(int c=0; c < resultIndices.length; c++) {
@@ -49,5 +53,10 @@ public class MainWindowModel {
 		recordsTableModel.setResults(results);
 		recordsTableModel.fireTableStructureChanged();		// hardcore, should be done more fine-grained
 	}
+	
+	public void showAllRecords() {
+		search(0, "");
+	}
+	
 }
 
