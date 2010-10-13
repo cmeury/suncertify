@@ -19,14 +19,13 @@ public class DataFileParser {
 	
 	private File databaseFile;
 	private int recordLength;
-	private Schema schema;
 	private String[][] records;
 	private boolean[] deleted;
 
-	public String[][] getAllRecords() {
-		return records;
+	public DataFileParser(File file) {
+		this.databaseFile = file;
 	}
-	
+
 	/**
 	 * Returns a row of data from the data file
 	 * @param index row index of the data that should be retrieved
@@ -47,29 +46,16 @@ public class DataFileParser {
 		return records[index][fieldNumber];
 	}
 	
-	/**
-	 * Returns true when update succeeded
-	 */
-	public boolean updateField(int index, int FieldNumber) {
-		// TBD
-		return true;
+	public String[][] getAllRecords() {
+		return records;
 	}
-
-	public DataFileParser(File file) {
-		this.databaseFile = file;
-		this.schema = new Schema();
-	}
-
+	
 	public int getRecordLength() {
 		return recordLength;
 	}
 
-	public Schema getSchema() {
-		return schema;
-	}
-
-	public boolean isDeleted(int recNo) {
-		return deleted[recNo];
+	public boolean isNotDeleted(int recNo) {
+		return !deleted[recNo];
 	}
 	
 	public void parse() throws Exception {
@@ -160,11 +146,7 @@ public class DataFileParser {
 				
 				// Rate
 				records[c][4] = readString(dataInputStream, 8);
-				
-//				String dateString = readString(dataInputStream, 10);
-//				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-//				Date date = dateFormat.parse(dateString);
-				
+
 				// Date
 				records[c][5] = readString(dataInputStream, 10);
 				

@@ -1,7 +1,7 @@
 package suncertify.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -21,8 +21,8 @@ public class MainWindowController {
 	public MainWindowController(MainWindowModel model, MainWindowView view) {
 		this.model = model;
 		this.view = view;
-		this.view.addSearchListener(new SearchListener());
 		this.view.addSearchDocumentListener(new SearchDocumentListener());
+		this.view.addCaseListener(new CaseCheckBoxListener());
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -34,7 +34,7 @@ public class MainWindowController {
 	
 	private void searchAction() {
 		Message.getLogger().info("Search text changed or search button pressed");
-		model.search(view.getColumnComboBoxIndex(), view.getSearchText());
+		model.search(view.getNameSearchText(), view.getLocationSearchText());
 	}
 
 	private class SearchDocumentListener implements DocumentListener {
@@ -53,12 +53,19 @@ public class MainWindowController {
 			searchAction();
 		}
 	}
-
-	private class SearchListener implements ActionListener {
+	
+	private class CaseCheckBoxListener implements ItemListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void itemStateChanged(ItemEvent e) {
+			switch(e.getStateChange()) {
+			case ItemEvent.SELECTED:
+				model.setCaseSensitive(true);
+				break;
+			case ItemEvent.DESELECTED:
+				model.setCaseSensitive(false);
+				break;
+			}
 			searchAction();
 		}
 	}
-	
 }
