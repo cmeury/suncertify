@@ -72,7 +72,7 @@ public class Data implements DB {
 		// as the interface dictates, we have to convert back to primitive types
 		int matchCount = 0;
 		for(int i = 0; i < allRecords.length; i++) {
-			if(match[i] == true) {
+			if(match[i] == true && dataFileParser.isNotDeleted(i)) {
 				matchCount++;
 			}
 		}
@@ -81,7 +81,7 @@ public class Data implements DB {
 		int index = 0;
 		int[] matchingRows = new int[matchCount];
 		for(int i = 0; i < allRecords.length; i++) {
-			if(match[i] == true) {
+			if(match[i] == true && dataFileParser.isNotDeleted(i)) {
 				matchingRows[index] = i;
 				index++;
 			}

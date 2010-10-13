@@ -18,19 +18,15 @@ public class Record {
 		YES, NO;
 	}
 	
-	private Deleted isDeleted;
+	private int recNo;
 	private String name;
 	private String location;
 	private String size;
 	private Smoking smokingAllowed;
 	private String rate;
 	private Date date;
-	private String id;
+	private String owner;
 	
-	public Deleted isDeleted() {
-		return isDeleted;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -55,33 +51,40 @@ public class Record {
 		return date;
 	}
 
-	public String getId() {
-		return id;
+	public String getOwner() {
+		return owner;
 	}
 
-	public Record(Deleted isDeleted, String name, String location, String size,
-			Smoking smokingAllowed, String rate, Date date, String id) {
+	public Record(String name, String location, String size,
+			Smoking smokingAllowed, String rate, Date date, String owner) {
 		super();
-		this.isDeleted = isDeleted;
 		this.name = name;
 		this.location = location;
 		this.size = size;
 		this.smokingAllowed = smokingAllowed;
 		this.rate = rate;
 		this.date = date;
-		this.id = id;
+		this.owner = owner;
 	}
 	
 	@Override
 	public String toString() {
 		String div = " / ";
-		return 	"Deleted: " + isDeleted + div +
+		return 	"RecNo: " + recNo + div +
 				"Name: " + name + div +
 				"Location: " + location + div +
 				"Size: " + size + div +
 				"Smoking: " + smokingAllowed + div +
 				"Rate: " + rate + div +
 				"Date: " + date + div +
-				"ID: " + id + div;
+				"Owner: " + owner + div;
+	}
+
+	public int getRecNo() {
+		return recNo;
+	}
+
+	public void setRecNo(int recNo) {
+		this.recNo = recNo;
 	}
 }
