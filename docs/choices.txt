@@ -4,3 +4,19 @@ DB
 - Reading and writing to the database file is real-time, since the assignment does not
   require the other custom application should be able to access the data while this
   application is running.
+- A proxy was implemented (DataProxy) to hide the ugly and error-prone arrays used in the DB interface.
+  
+GUI
+---
+
+Searching
+
+- The assignment states that the application "must allow the user to search all data"
+  which I translate to: it must be possible to display all data (unfiltered).
+  Furthermore, it states that it must offer the possibility to search "for records
+  where the name and/or location field exactly match values specified by the user"
+  which I have implemented with two text fields that offer live search. I interpreted
+  "name and/or location" as allowing the user to search for either and not to offer "OR"
+  as a search modifier. I further assume the user expectation of two search fields is an AND
+  search mode. 
+  
