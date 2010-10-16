@@ -19,6 +19,12 @@ public class MainWindowController {
 	private MainWindowView view;
 	
 	public MainWindowController(MainWindowModel model, MainWindowView view) {
+		if(model == null) {
+			throw new NullPointerException("Cannot construct controller without a model");
+		}
+		if(view == null) {
+			throw new NullPointerException("Cannot construct controller without a view");
+		}
 		this.model = model;
 		this.view = view;
 		this.view.addSearchDocumentListener(new SearchDocumentListener());

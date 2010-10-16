@@ -79,8 +79,7 @@ public class DataFileParserTest {
 			fail("Record must be found");
 		}
 		assertNotNull(records);
-		int length = datafile.getAllRecords().length;
-		assertTrue(31 == datafile.getAllRecords().length);
+		assertTrue(datafile.getAllRecords().length == 31);
 	}
 
 
@@ -102,7 +101,7 @@ public class DataFileParserTest {
 		assertNotNull(records);
 		int length = datafile.getAllRecords().length;
 		for(int i = 0; i < length; i++) {
-			assertTrue(datafile.isNotDeleted(i));
+			assertTrue(!datafile.isDeleted(i));
 		}
 	}
 

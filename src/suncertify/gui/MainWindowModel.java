@@ -19,7 +19,9 @@ public class MainWindowModel {
 	private boolean caseSensitive;
 	
 	public MainWindowModel(File fileName) {
-		assert fileName != null;
+		if(fileName == null) {
+			throw new NullPointerException("Cannot construct model without a data file name specified");
+		}
 		DB db = new Data(fileName);
 		this.dataProxy = new DataProxy(db);
 		this.recordsTableModel = new RecordsTableModel();
@@ -31,7 +33,7 @@ public class MainWindowModel {
 	
 	public synchronized void search(String name, String location) {
 		if(name == null || location == null) {
-			throw new NullPointerException("Need String objects to perform a search");
+			throw new NullPointerException("Need strings to perform a search");
 		}
 		Message.infoToLog("Updating table model and firing a change event");
 		if(caseSensitive == false) {

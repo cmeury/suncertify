@@ -4,12 +4,16 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 
+import suncertify.tools.Message;
+
 
 public class Data implements DB {
 	private DataFileParser dataFileParser;
 	
 	public Data(File fileName) {
-		assert fileName != null;
+		if(fileName == null) {
+			throw new NullPointerException("Path to data file is needed");
+		}
 		this.dataFileParser = new DataFileParser(fileName);
 		try {
 			dataFileParser.parse();
@@ -39,10 +43,15 @@ public class Data implements DB {
 
 	@Override
 	public int[] find(String[] criteria) {
+		if(criteria == null) {
+			throw new NullPointerException("To find records, criteria have to be given.");
+		}
 		if(criteria.length != Schema.getFieldCount()) {
 			throw new IllegalArgumentException("Invalid criteria array");
 		}
 
+		Message.infoToLog("Trying to find records based on following criteria: " + criteria.toString());
+		
 		String[][] allRecords = dataFileParser.getAllRecords();
 		//Set<Integer> resultIndices = new TreeSet<Integer>();
 		boolean[] match = new boolean[allRecords.length];
@@ -72,7 +81,7 @@ public class Data implements DB {
 		// as the interface dictates, we have to convert back to primitive types
 		int matchCount = 0;
 		for(int i = 0; i < allRecords.length; i++) {
-			if(match[i] == true && dataFileParser.isNotDeleted(i)) {
+			if(match[i] == true && dataFileParser.isDeleted(i)) {
 				matchCount++;
 			}
 		}
@@ -81,7 +90,7 @@ public class Data implements DB {
 		int index = 0;
 		int[] matchingRows = new int[matchCount];
 		for(int i = 0; i < allRecords.length; i++) {
-			if(match[i] == true && dataFileParser.isNotDeleted(i)) {
+			if(match[i] == true && !dataFileParser.isDeleted(i)) {
 				matchingRows[index] = i;
 				index++;
 			}
