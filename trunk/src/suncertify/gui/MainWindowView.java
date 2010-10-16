@@ -45,6 +45,9 @@ public class MainWindowView extends JFrame {
 	private JCheckBox caseCheckBox;
 	
 	public MainWindowView(MainWindowModel model) {
+		if(model == null) {
+			throw new NullPointerException("Cannot construct view without a model");
+		}
 		this.mainWindowModel = model;
 		Message.infoToLog("Creating and displaying the main window");
 

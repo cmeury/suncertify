@@ -58,9 +58,21 @@ public class DataFileParser {
 		return records;
 	}
 
-
-	public boolean isNotDeleted(int recNo) {
-		return !deleted[recNo];
+	/**
+	 * Checks if the record specified by the argument is not deleted
+	 * @param recNo
+	 * @return False if record is deleted or the index is out of bounds, true otherwise
+	 * @throws RecordNotFoundException
+	 */
+	public boolean isDeleted(int recNo) {
+		if(records.length == 0 || recNo > records.length) {
+			return true;
+		}
+		if(records[recNo] == null || records[recNo].length == 0) {
+			return true;
+		}
+		
+		return deleted[recNo];
 	}
 	
 	public void parse() throws Exception {
@@ -154,8 +166,21 @@ public class DataFileParser {
 		}
 	}
 
+	/**
+	 * Reads a number of bytes from an input stream and returns a String
+	 * @param dataInputStream The stream to be read from
+	 * @param fieldNameLength Must be above zero
+	 * @return A string containing the read bytes
+	 * @throws IOException If the reading process resulted in an exception begin thrown
+	 */
 	private String readString(DataInputStream dataInputStream,
 			int fieldNameLength) throws IOException {
+		if(dataInputStream == null) {
+			throw new IllegalArgumentException("Cannot read when no data stream is given");
+		}
+		if(fieldNameLength < 0) {
+			throw new IllegalArgumentException("Field name length must be above zero");
+		}
 		byte[] nameBytes = new byte[fieldNameLength];
 		dataInputStream.readFully(nameBytes,0,fieldNameLength);
 		StringBuffer sb = new StringBuffer();

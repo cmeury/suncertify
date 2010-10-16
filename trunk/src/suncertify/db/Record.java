@@ -22,6 +22,17 @@ public class Record {
 	private Date date;
 	private String owner;
 	
+	public Record(String name, String location, String size,
+			Smoking smokingAllowed, String rate, Date date, String owner) {
+		super();
+		this.name = name;
+		this.location = location;
+		this.size = size;
+		this.smokingAllowed = smokingAllowed;
+		this.rate = rate;
+		this.date = date;
+		this.owner = owner;
+	}
 	public String getName() {
 		return name;
 	}
@@ -48,18 +59,6 @@ public class Record {
 
 	public String getOwner() {
 		return owner;
-	}
-
-	public Record(String name, String location, String size,
-			Smoking smokingAllowed, String rate, Date date, String owner) {
-		super();
-		this.name = name;
-		this.location = location;
-		this.size = size;
-		this.smokingAllowed = smokingAllowed;
-		this.rate = rate;
-		this.date = date;
-		this.owner = owner;
 	}
 	
 	@Override

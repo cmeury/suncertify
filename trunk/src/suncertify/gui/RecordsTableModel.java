@@ -14,6 +14,9 @@ public class RecordsTableModel extends AbstractTableModel {
 	private List<Record> resultRecords;
 	
 	public void setResultRecords(List<Record> records) {
+		if(records == null) {
+			throw new NullPointerException("Cannot update table model with an empty collection");
+		}
 		this.resultRecords = records;
 	}
 
@@ -35,6 +38,9 @@ public class RecordsTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
+		if(rowIndex < 0 || columnIndex < 0) {
+			throw new IllegalArgumentException("Requested table value is out of bounds");
+		}
 		if(resultRecords == null) {
 			return null;
 		}
@@ -60,6 +66,9 @@ public class RecordsTableModel extends AbstractTableModel {
 	
 	@Override
 	public String getColumnName(int columnIndex) {
+		if(columnIndex < 0 || columnIndex > Schema.getFieldCount()) {
+			throw new IllegalArgumentException("Specified column index is outside of available columns");
+		}
 		return Schema.getFieldNames()[columnIndex];
 	}
 }
