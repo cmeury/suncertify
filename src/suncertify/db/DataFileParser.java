@@ -64,7 +64,7 @@ public class DataFileParser {
 	}
 	
 	public void parse() throws Exception {
-		Message.getLogger().info("Parsing the data file " + databaseFile.getAbsolutePath());
+		Message.infoToLog("Parsing the data file " + databaseFile.getAbsolutePath());
 		FileInputStream fileInputStream = null;
 		try {
 			fileInputStream = new FileInputStream(databaseFile);
@@ -146,9 +146,9 @@ public class DataFileParser {
 				records[c][6] = readString(dataInputStream, 8);
 			}
 		} catch(EOFException e) {
-			Message.error("Unexpected end of data file encountered.", e);
+			Message.errorToUserAndLog("Unexpected end of data file encountered.", e);
 		} catch(Exception e) {
-			Message.error("Unable to parse data file.", e);
+			Message.errorToUserAndLog("Unable to parse data file.", e);
 		} finally {
 			fileInputStream.close();
 		}
