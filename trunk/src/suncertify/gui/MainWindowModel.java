@@ -33,7 +33,7 @@ public class MainWindowModel {
 		if(name == null || location == null) {
 			throw new NullPointerException("Need String objects to perform a search");
 		}
-		Message.getLogger().fine("Updating table model and firing a change event");
+		Message.infoToLog("Updating table model and firing a change event");
 		if(caseSensitive == false) {
 			name = name.toLowerCase();
 			location = location.toLowerCase();

@@ -46,7 +46,7 @@ public class MainWindowView extends JFrame {
 	
 	public MainWindowView(MainWindowModel model) {
 		this.mainWindowModel = model;
-		Message.getLogger().info("Creating and displaying the main window");
+		Message.infoToLog("Creating and displaying the main window");
 
 		// Create root panel
 		rootPanel = new JPanel(new BorderLayout());

@@ -46,10 +46,9 @@ public class DataProxy {
 				Record currentRecord = new Record(results[0], results[1], results[2], smokingAllowed, results[4], date, results[6]);
 				this.records.add(currentRecord);
 			} catch (RecordNotFoundException e) {
-				Message.error("Could not find result index in database", e);
+				Message.errorToUserAndLog("Could not find result index in database", e);
 			} catch (ParseException e) {
-				Message.warning("Could not parse date: " + results[5]);
-				Message.getLogger().warning("Reading of datafile entry " + i + " incomplete, could not parse date: " + results[5]);
+				Message.warningToUserAndLog("Reading of datafile entry " + i + " incomplete, could not parse date: " + results[5]);
 			}
 		}
 	}

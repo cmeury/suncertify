@@ -33,7 +33,7 @@ public class MainWindowController {
 	}
 	
 	private void searchAction() {
-		Message.getLogger().info("Search text changed or search button pressed");
+		Message.infoToLog("Search text changed or search button pressed");
 		model.search(view.getNameSearchText(), view.getLocationSearchText());
 	}
 

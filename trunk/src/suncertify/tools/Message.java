@@ -1,34 +1,38 @@
 package suncertify.tools;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
 /**
- * Presents text to the user
- * @author Ced
- *
+ * Presents warning and error message to the user and prints stack traces to the log
  */
 public class Message {
 
 	private static Logger logger = Logger.getLogger("suncertify");
 
-	private static String newline = System.getProperty("line.separator");
-	
-	public static void warning(String message) {
-		System.err.println(message);
+	public static void warningToUserAndLog(String message) {
+		logger.log(Level.WARNING, message);
+		JOptionPane.showMessageDialog(null, message, Strings.getApplicationName() + " - Warning", JOptionPane.WARNING_MESSAGE);
 	}
 	
-	public static void error(String message, Exception e) {
-		System.err.println(message + newline);
-		e.printStackTrace();
+	public static void errorToUserAndLog(String message, Exception e) {
+		logger.log(Level.SEVERE, message, e);
+		JOptionPane.showMessageDialog(null, message, Strings.getApplicationName() + " - Warning", JOptionPane.WARNING_MESSAGE);
 	}
 
-	public static void error(Exception e) {
-		System.err.println("Application encountered a fatal error." + newline);
-		e.printStackTrace();
+	public static void errorToUserAndLog(Exception e) {
+		logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+		JOptionPane.showMessageDialog(null, "Application encountered a fatal error in method:\n" + e.getStackTrace()[0].toString(), "Fatal error.", JOptionPane.ERROR_MESSAGE);
 	}
-	
-	public static Logger getLogger() {
-		return logger;
+
+	public static void infoToLog(String message) {
+		logger.info(message);
+	}
+
+	public static void warningToLog(String message) {
+		logger.warning(message);
 	}
 
 }
