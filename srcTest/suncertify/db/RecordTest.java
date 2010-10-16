@@ -13,12 +13,7 @@ public class RecordTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		record = new Record(Record.Deleted.YES, "Hilton", "Basel", "3", Record.Smoking.ALLOWED,"$50", new Date(1),"22");
-	}
-
-	@Test
-	public void testIsDeleted() {
-		assertTrue(record.isDeleted() == Record.Deleted.YES);
+		record = new Record("Hilton", "Basel", "3", Record.Smoking.ALLOWED,"$50", new Date(1),"22");
 	}
 
 	@Test
@@ -53,7 +48,7 @@ public class RecordTest {
 
 	@Test
 	public void testGetId() {
-		assertTrue(record.getId().equals("22"));
+		assertTrue(record.getOwner().equals("22"));
 	}
 
 	@Test

@@ -9,11 +9,11 @@ import java.io.IOException;
 import suncertify.tools.Message;
 
 /**
- * Opens database file and stores schema
+ * Stores the contents of the specified data file in a String[][] array. When this
+ * class is constructed, a check for existence and read/write access is performed.
  * From JDK documentation: 
  * "DataInputStream is not necessarily safe for multithreaded access. Thread safety is
  * optional and is the responsibility of users of methods in this class."
- *
  */
 public class DataFileParser {
 	
@@ -24,6 +24,18 @@ public class DataFileParser {
 
 	public DataFileParser(File file) {
 		this.databaseFile = file;
+		if(this.databaseFile == null) {
+			throw new IllegalArgumentException("No database file specified");
+		}
+		if(this.databaseFile.exists() == false) {
+			throw new IllegalArgumentException("Database file not found");
+		}
+		if(this.databaseFile.canRead() == false) {
+			throw new IllegalArgumentException("Cannot read specified database file");
+		}
+		if(this.databaseFile.canWrite() == false) {
+			throw new IllegalArgumentException("Cannot write to specified database file");
+		}
 	}
 
 	/**
@@ -42,36 +54,16 @@ public class DataFileParser {
 		return records[index];
 	}
 	
-	public String getField(int index, int fieldNumber) {
-		return records[index][fieldNumber];
-	}
-	
 	public String[][] getAllRecords() {
 		return records;
 	}
-	
-	public int getRecordLength() {
-		return recordLength;
-	}
+
 
 	public boolean isNotDeleted(int recNo) {
 		return !deleted[recNo];
 	}
 	
 	public void parse() throws Exception {
-		if(this.databaseFile == null) {
-			throw new Exception("No database file specified");
-		}
-		if(this.databaseFile.exists() == false) {
-			throw new Exception("Database file not found");
-		}
-		if(this.databaseFile.canRead() == false) {
-			throw new Exception("Cannot read specified database file");
-		}
-		if(this.databaseFile.canWrite() == false) {
-			throw new Exception("Cannot write to specified database file");
-		}
-		
 		Message.getLogger().info("Parsing the data file " + databaseFile.getAbsolutePath());
 		FileInputStream fileInputStream = null;
 		try {
