@@ -14,11 +14,6 @@ public class Record {
 		ALLOWED, NOTALLOWED;
 	}
 	
-	public enum Deleted {
-		YES, NO;
-	}
-	
-	private int recNo;
 	private String name;
 	private String location;
 	private String size;
@@ -70,21 +65,12 @@ public class Record {
 	@Override
 	public String toString() {
 		String div = " / ";
-		return 	"RecNo: " + recNo + div +
-				"Name: " + name + div +
+		return 	"Name: " + name + div +
 				"Location: " + location + div +
 				"Size: " + size + div +
 				"Smoking: " + smokingAllowed + div +
 				"Rate: " + rate + div +
 				"Date: " + date + div +
 				"Owner: " + owner + div;
-	}
-
-	public int getRecNo() {
-		return recNo;
-	}
-
-	public void setRecNo(int recNo) {
-		this.recNo = recNo;
 	}
 }
