@@ -81,9 +81,14 @@ public class Data implements DB {
 		// as the interface dictates, we have to convert back to primitive types
 		int matchCount = 0;
 		for(int i = 0; i < allRecords.length; i++) {
-			if(match[i] == true && dataFileParser.isDeleted(i)) {
+			if(match[i] == true && !dataFileParser.isDeleted(i)) {
 				matchCount++;
 			}
+		}
+
+		// if we have not found any matches return an empty array
+		if(matchCount == 0) {
+			return new int[0];
 		}
 		
 		// loop through the boolean array and fill up the result rows array with content

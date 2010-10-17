@@ -46,19 +46,19 @@ public class RecordsTableModel extends AbstractTableModel {
 		}
 		switch(columnIndex) {
 		case 0:
-			return resultRecords.get(rowIndex).getName();
+			return resultRecords.get(rowIndex).getName().trim();
 		case 1:
-			return resultRecords.get(rowIndex).getLocation();
+			return resultRecords.get(rowIndex).getLocation().trim();
 		case 2:
-			return resultRecords.get(rowIndex).getSize();
+			return resultRecords.get(rowIndex).getSize().trim();
 		case 3:
 			return resultRecords.get(rowIndex).isSmokingAllowed();
 		case 4:
-			return resultRecords.get(rowIndex).getRate();
+			return resultRecords.get(rowIndex).getRate().trim();
 		case 5:
 			return resultRecords.get(rowIndex).getDate();
 		case 6:
-			return resultRecords.get(rowIndex).getOwner();
+			return resultRecords.get(rowIndex).getOwner().trim();
 		default:
 			return null;
 		}
