@@ -15,7 +15,7 @@ import suncertify.tools.Message;
  */
 public class MainWindowModel {
 	private DataProxy dataProxy;
-	private RecordsTableModel3 recordsTableModel;
+	private RecordsTableModel recordsTableModel;
 	private boolean caseSensitive;
 	
 	public MainWindowModel(File fileName) {
@@ -24,7 +24,7 @@ public class MainWindowModel {
 		}
 		DB db = new Data(fileName);
 		this.dataProxy = new DataProxy(db);
-		this.recordsTableModel = new RecordsTableModel3();
+		this.recordsTableModel = new RecordsTableModel();
 	}
 	
 	public TableModel getTableModel() {
