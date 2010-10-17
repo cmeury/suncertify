@@ -56,7 +56,6 @@ public class DataProxy {
 	public List<Record> getRecords() {
 		return records;
 	}
-	
 
 	/**
 	 * Returns records that are valid regarding the supplied filter. A <i>null</i> value is acceptable and
