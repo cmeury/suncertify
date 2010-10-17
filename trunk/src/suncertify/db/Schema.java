@@ -16,8 +16,8 @@ public class Schema {
 		return magicCookie;
 	}
 
-	public static String[] getFieldNames() {
-		return fieldNames;
+	public static String getFieldNames(int index) {
+		return fieldNames[index];
 	}
 
 	public static int getFieldCount() {
