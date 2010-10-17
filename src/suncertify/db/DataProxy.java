@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import suncertify.db.Record.Smoking;
 import suncertify.tools.Message;
 
 public class DataProxy {
@@ -33,17 +32,17 @@ public class DataProxy {
 			String[] results = null;
 			try {
 				 results = db.read(allIndices[i]);
-                Record.Smoking smokingAllowed;
+                boolean smokingAllowed;
                 if(results[3].equals("Y")) {
-                        smokingAllowed = Smoking.ALLOWED;
+                        smokingAllowed = true;
                 } else {
-                        smokingAllowed = Smoking.NOTALLOWED;
+                        smokingAllowed = false;
                 }
 				
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 				Date date = dateFormat.parse(results[5]);
 				
-				Record currentRecord = new Record(results[0], results[1], results[2], smokingAllowed, results[4], date, results[6]);
+				Record currentRecord = new Record(results[0], results[1], results[2], smokingAllowed, results[4], date, results[6], i);
 				this.records.add(currentRecord);
 			} catch (RecordNotFoundException e) {
 				Message.errorToUserAndLog("Could not find result index in database", e);

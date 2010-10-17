@@ -10,20 +10,17 @@ import java.util.Date;
  */
 public class Record {
 	
-	public enum Smoking {
-		ALLOWED, NOTALLOWED;
-	}
-	
 	private String name;
 	private String location;
 	private String size;
-	private Smoking smokingAllowed;
+	private boolean smokingAllowed;
 	private String rate;
 	private Date date;
 	private String owner;
+	private int recNo;
 	
 	public Record(String name, String location, String size,
-			Smoking smokingAllowed, String rate, Date date, String owner) {
+			boolean smokingAllowed, String rate, Date date, String owner, int recNo) {
 		super();
 		this.name = name;
 		this.location = location;
@@ -32,6 +29,7 @@ public class Record {
 		this.rate = rate;
 		this.date = date;
 		this.owner = owner;
+		this.recNo = recNo;
 	}
 	public String getName() {
 		return name;
@@ -45,7 +43,7 @@ public class Record {
 		return size;
 	}
 
-	public Smoking isSmokingAllowed() {
+	public boolean isSmokingAllowed() {
 		return smokingAllowed;
 	}
 
@@ -59,6 +57,10 @@ public class Record {
 
 	public String getOwner() {
 		return owner;
+	}
+	
+	public int getRecNo() {
+		return recNo;
 	}
 	
 	@Override
