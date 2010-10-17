@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
 import suncertify.db.Record;
 import suncertify.db.Schema;
 
-public class RecordsTableModel3 extends AbstractTableModel {
+public class RecordsTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	private List<Record> resultRecords = new ArrayList<Record>();
