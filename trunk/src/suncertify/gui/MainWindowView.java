@@ -1,6 +1,7 @@
 package suncertify.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
@@ -25,6 +26,9 @@ import suncertify.tools.Strings;
  */
 public class MainWindowView extends JFrame {
 	private static final long serialVersionUID = 1L;
+	
+	private static final int FRAME_WIDTH = 1000;
+	private static final int FRAME_HEIGHT = 700;
 	
     private JPanel rootPanel;
 	private JLabel introLabel;
@@ -97,7 +101,7 @@ public class MainWindowView extends JFrame {
 		// Set some properties and show this frame
 		setTitle(Strings.getApplicationName());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 500); 
+		setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT)); 
 		pack();
 		setVisible(true);
 	}
