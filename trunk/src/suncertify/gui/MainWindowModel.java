@@ -15,7 +15,7 @@ import suncertify.tools.Message;
  */
 public class MainWindowModel {
 	private DataProxy dataProxy;
-	private RecordsTableModel recordsTableModel;
+	private RecordsTableModel3 recordsTableModel;
 	private boolean caseSensitive;
 	
 	public MainWindowModel(File fileName) {
@@ -24,7 +24,7 @@ public class MainWindowModel {
 		}
 		DB db = new Data(fileName);
 		this.dataProxy = new DataProxy(db);
-		this.recordsTableModel = new RecordsTableModel();
+		this.recordsTableModel = new RecordsTableModel3();
 	}
 	
 	public TableModel getTableModel() {
@@ -40,8 +40,7 @@ public class MainWindowModel {
 			name = name.toLowerCase();
 			location = location.toLowerCase();
 		}
-		recordsTableModel.setResultRecords(dataProxy.getFilteredRecords(name, location, caseSensitive));
-		updateTable();
+		recordsTableModel.setRecords(dataProxy.getFilteredRecords(name, location, caseSensitive));
 	}
 
 	public void updateTable() {
